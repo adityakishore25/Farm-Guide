@@ -14,16 +14,19 @@ def show(models, metrics, le, X):
 
     st.subheader("Decision Tree Visualization")
     if st.checkbox("Plot Decision Tree"):
-        model = models['Decision Tree']
+        model = models.get('Decision Tree')
         
-        dot_data = export_graphviz(
-            decision_tree=model, max_depth=3, out_file=None, filled=True, rounded=True,
-            feature_names=X.columns, class_names=le.classes_
-        )
+        if model is not None:
+            dot_data = export_graphviz(
+                decision_tree=model, max_depth=3, out_file=None, filled=True, rounded=True,
+                feature_names=X.columns, class_names=le.classes_
+            )
         
-        graph = pydotplus.graph_from_dot_data(dot_data)
-        image = graph.create_png()
-        st.image(image, use_column_width=True)
+            graph = pydotplus.graph_from_dot_data(dot_data)
+            image = graph.create_png()
+            st.image(image, use_column_width=True)
+        else:
+            st.error("Decision Tree model not found.")
 
     st.subheader("Model Comparison")
     plot_metrics_comparison(metrics_df)
@@ -67,29 +70,3 @@ def plot_r2_score(metrics_df):
     ax.set_ylabel("R2 Score (%)")
     ax.set_xlabel("Models")
     st.pyplot(fig)
-
-if __name__ == "__main__":
-    # Example metrics (replace with actual metrics dictionary)
-    metrics = {
-        'Logistic Regression': {'accuracy': 0.85, 'precision': 0.82, 'r2_score': 0.75},
-        'Decision Tree': {'accuracy': 0.90, 'precision': 0.88, 'r2_score': 0.80},
-        'Random Forest': {'accuracy': 0.92, 'precision': 0.90, 'r2_score': 0.85}
-    }
-
-    # Example models (replace with actual models dictionary)
-    models = {
-        'Logistic Regression': None,  # Replace with actual trained model
-        'Decision Tree': None,  # Replace with actual trained model
-        'Random Forest': None  # Replace with actual trained model
-    }
-
-    # Example label encoder (replace with actual label encoder)
-    le = {'classes_': ['Class1', 'Class2', 'Class3']}  
-
-    # Example feature names (replace with actual feature names)
-    feature_names = ['feature1', 'feature2', 'feature3']
-
-    # Example X data (replace with actual X data)
-    X = pd.DataFrame([[1, 2, 3], [4, 5, 6], [7, 8, 9]], columns=feature_names)
-
-    show(models, metrics, le, X)

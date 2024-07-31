@@ -71,8 +71,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Determine the selected page based on the query parameters
-query_params = st.query_params
-page = query_params.get("page", "home")
+query_params = st.experimental_get_query_params()
+page = query_params.get("page", ["home"])[0]
 
 if page == "home":
     home.show()
