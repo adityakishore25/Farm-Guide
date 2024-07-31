@@ -1,4 +1,4 @@
-# Import necessary libraries --> Decision Tree Complete
+# Import necessary libraries
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -8,12 +8,13 @@ from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
+import streamlit as st
 
 # Load the dataset
 data = pd.read_csv('../dataset/crop_recommendation.csv')
 
 # Display the first few rows of the dataset
-print(data.head())
+st.write(data.head())
 
 # Preprocessing
 X = data.drop('label', axis=1)  # Assuming 'label' is the target column
@@ -41,11 +42,11 @@ precision = precision_score(y_test, y_pred_dt, average='macro')
 recall = recall_score(y_test, y_pred_dt, average='macro')
 f1 = f1_score(y_test, y_pred_dt, average='macro')
 
-print("Decision Tree Performance:")
-print(f"Accuracy: {accuracy:.2f}")
-print(f"Precision: {precision:.2f}")
-print(f"Recall: {recall:.2f}")
-print(f"F1-Score: {f1:.2f}")
+st.write("Decision Tree Performance:")
+st.write(f"Accuracy: {accuracy:.2f}")
+st.write(f"Precision: {precision:.2f}")
+st.write(f"Recall: {recall:.2f}")
+st.write(f"F1-Score: {f1:.2f}")
 
 # Confusion Matrix
 conf_matrix = confusion_matrix(y_test, y_pred_dt)
@@ -54,19 +55,19 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=np.uniqu
 plt.xlabel('Predicted')
 plt.ylabel('True')
 plt.title('Confusion Matrix')
-plt.show()
+st.pyplot(plt)
 
 # Classification Report
 from sklearn.metrics import classification_report
 
-print("Classification Report:")
-print(classification_report(y_test, y_pred_dt))
+st.write("Classification Report:")
+st.text(classification_report(y_test, y_pred_dt))
 
 # Printing the Decision Tree
 plt.figure(figsize=(20,10))
 plot_tree(dt, filled=True, feature_names=X.columns, class_names=np.unique(y), fontsize=10)
 plt.title("Decision Tree")
-plt.show()
+st.pyplot(plt)
 
 # Define a function to predict the crop based on input features
 def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
@@ -91,4 +92,4 @@ def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
 
 # Example usage of the prediction function
 predicted_crop = predict_crop(90, 42, 43, 20.87, 82.00, 6.50, 202.93)
-print(f"The predicted crop using Decision Tree is: {predicted_crop}")
+st.write(f"The predicted crop using Decision Tree is: {predicted_crop}")
