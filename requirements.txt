@@ -6,4 +6,5 @@ pandas
 scikit_learn
 tensorflow
 pydotplus
+graphviz
 
