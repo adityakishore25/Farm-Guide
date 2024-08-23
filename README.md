@@ -1,4 +1,4 @@
-# FarmEasy
+# Farm Guide
 
 This project provides a machine learning-based crop recommendation system. The system uses environmental parameters such as nitrogen, phosphorus, potassium levels, temperature, humidity, pH, and rainfall to predict the most suitable crop for a given set of conditions.
 
